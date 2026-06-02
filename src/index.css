@@ -1,44 +1,178 @@
 @import "tailwindcss";
 
+/* ----------------------------------------------------
+   Core CSS Variables & Theme Configuration
+   ---------------------------------------------------- */
+:root {
+  --primary-glow: rgba(236, 72, 153, 0.15); /* pink */
+  --secondary-glow: rgba(168, 85, 247, 0.15); /* purple */
+  --bg-dark: #030303;
+}
+
+/* ----------------------------------------------------
+   Universal Defaults & Smooth Selection Behavior
+   ---------------------------------------------------- */
 * {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+  outline-color: rgba(236, 72, 153, 0.4);
 }
 
 html {
   scroll-behavior: auto;
+  background-color: var(--bg-dark);
 }
 
 body {
-  background: #050505;
-  color: white;
+  background: var(--bg-dark);
+  color: #f4f4f5;
   overflow-x: hidden;
-  font-family: Inter, sans-serif;
+  font-family: 'Outfit', 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+  text-rendering: optimizeLegibility;
+  -webkit-font-smoothing: antialiased;
 }
 
+/* Premium Selection highlight colors */
+::selection {
+  background-color: rgba(236, 72, 153, 0.35);
+  color: #fdf2f8;
+}
+
+/* ----------------------------------------------------
+   Premium Smooth Scrollbars (WebKit)
+   ---------------------------------------------------- */
 ::-webkit-scrollbar {
-  width: 8px;
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: #070708;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #444;
-  border-radius: 10px;
+  background: linear-gradient(to bottom, #ec4899, #8b5cf6);
+  border: 2px solid #070708;
+  border-radius: 20px;
+  box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
 }
 
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(to bottom, #f472b6, #a78bfa);
+}
+
+/* ----------------------------------------------------
+   Reusable Utility Styles & Glassmorphism
+   ---------------------------------------------------- */
 .section-padding {
-  padding: 120px 8%;
+  padding: 140px 8% 120px 8%;
+  @media (max-width: 768px) {
+    padding: 90px 6% 80px 6%;
+  }
 }
 
-.glow-text {
+/* Luxury Cursive/Serif Header Highlights */
+.font-celebrate {
+  font-family: 'Playfair Display', Georgia, serif;
+}
+
+/* Rich Glowing Text Shadows */
+.glow-text-pink {
   text-shadow:
-    0 0 20px rgba(255,255,255,0.5),
-    0 0 40px rgba(255,255,255,0.2);
+    0 0 15px rgba(236, 72, 153, 0.4),
+    0 0 30px rgba(236, 72, 153, 0.15);
 }
 
+.glow-text-gold {
+  text-shadow:
+    0 0 15px rgba(251, 191, 36, 0.3),
+    0 0 30px rgba(251, 191, 36, 0.1);
+}
+
+/* Glassmorphism Premium Panels */
+.glass-panel {
+  background: rgba(18, 18, 22, 0.45);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+.glass-panel-hover {
+  transition: all 0.5s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+.glass-panel-hover:hover {
+  background: rgba(22, 22, 28, 0.6);
+  border-color: rgba(236, 72, 153, 0.25);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.4),
+    0 0 30px rgba(236, 72, 153, 0.1);
+  transform: translateY(-4px);
+}
+
+/* Premium Ambient Neon Gradients */
 .gradient-bg {
   background:
-    radial-gradient(circle at top left,#8b5cf620,transparent 40%),
-    radial-gradient(circle at bottom right,#ec489920,transparent 40%),
-    #050505;
+    radial-gradient(circle at 10% 20%, var(--primary-glow), transparent 45%),
+    radial-gradient(circle at 90% 80%, var(--secondary-glow), transparent 45%),
+    #050507;
+}
+
+/* ----------------------------------------------------
+   Special Keyframe Animations & Micro-motions
+   ---------------------------------------------------- */
+@keyframes pulse-soft {
+  0%, 100% {
+    transform: scale(1);
+    opacity: 0.5;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+}
+
+.animate-pulse-soft {
+  animation: pulse-soft 4s ease-in-out infinite;
+}
+
+@keyframes rotate-slow {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+.animate-rotate-slow {
+  animation: rotate-slow 20s linear infinite;
+}
+
+/* 3D Candle fire flickering */
+@keyframes flicker {
+  0%, 100% {
+    transform: scale(1) rotate(-1deg);
+    filter: brightness(1);
+  }
+  20% {
+    transform: scale(1.1) rotate(1deg);
+    filter: brightness(1.2) drop-shadow(0 0 15px #f59e0b);
+  }
+  40% {
+    transform: scale(0.95) rotate(-2deg);
+    filter: brightness(0.9);
+  }
+  60% {
+    transform: scale(1.05) rotate(2deg);
+    filter: brightness(1.1) drop-shadow(0 0 20px #f59e0b);
+  }
+  80% {
+    transform: scale(0.98) rotate(0deg);
+    filter: brightness(0.95);
+  }
+}
+
+.animate-flicker {
+  animation: flicker 1.5s ease-in-out infinite alternate;
 }

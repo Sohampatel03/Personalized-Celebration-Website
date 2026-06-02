@@ -3,56 +3,65 @@ import { useState } from "react";
 import Loader from "./components/Loader/Loader";
 import Hero from "./components/Hero/Hero";
 import MouseGlow from "./components/MouseGlow/MouseGlow";
-
 import FloatingMemories from "./components/FloatingMemories/FloatingMemories";
-import MemoryStory from "./components/MemoryStory/MemoryStory";
+import Timeline from "./components/Timeline/Timeline";
 import Gallery from "./components/Gallery/Gallery";
 import VideoSection from "./components/VideoSection/VideoSection";
 import FinalGift from "./components/FinalGift/FinalGift";
-
-import { storyData } from "./data/storyData";
+import BackgroundParticles from "./components/BackgroundParticles/BackgroundParticles";
+import MusicPlayer from "./components/MusicPlayer/MusicPlayer";
+import SectionDivider from "./components/SectionDivider/SectionDivider";
 
 import useLenis from "./hooks/useLenis";
 
 function App() {
-useLenis();
+  useLenis();
 
-const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
-if (loading) {
-return (
-<Loader
-onFinish={() => setLoading(false)}
-/>
-);
-}
+  if (loading) {
+    return (
+      <Loader
+        onFinish={() => setLoading(false)}
+      />
+    );
+  }
 
-return (
-<> <MouseGlow />
+  return (
+    <div className="relative min-h-screen bg-zinc-950 text-white overflow-hidden selection:bg-pink-500/30 selection:text-pink-200">
+      {/* Immersive ambient star/heart particle system */}
+      <BackgroundParticles />
 
-```
-  <Hero />
+      {/* Modern interactive mouse light pointer follow */}
+      <MouseGlow />
 
-  <FloatingMemories />
+      {/* Floating high-end music widget with bouncing waves */}
+      <MusicPlayer />
 
-  {storyData.map((item, index) => (
-    <MemoryStory
-      key={index}
-      image={item.image}
-      title={item.title}
-      subtitle={item.subtitle}
-    />
-  ))}
+      {/* Storytelling segments */}
+      <Hero />
 
-  <Gallery />
+      <SectionDivider />
 
-  <VideoSection />
+      <FloatingMemories />
 
-  <FinalGift />
-</>
+      <SectionDivider />
 
+      <Timeline />
 
-);
+      <SectionDivider />
+
+      <Gallery />
+
+      <SectionDivider />
+
+      <VideoSection />
+
+      <SectionDivider />
+
+      <FinalGift />
+    </div>
+  );
 }
 
 export default App;
