@@ -4,38 +4,38 @@ import { FaTimes, FaHeart, FaChevronRight } from "react-icons/fa";
 
 const memoriesList = [
   {
-    image: "/images/gallery/gallery1.webp",
-    title: "The Ultimate Bond",
-    tag: "Sibling Love",
-    desc: "Through every milestone, you've been my partner-in-crime, my worst critic, and my biggest supporter. Here's to our unbreakable bond!",
+    image: "/images/gallery/born.webp",
+    title: "The Day You Arrived",
+    tag: "A New Beginning",
+    desc: "The day our family became brighter, happier, and more complete. From the moment you arrived, you filled our lives with endless smiles, precious memories, and a love that only grew stronger with every passing year.",
     rotation: -5, left: "4%", top: "12%",
   },
   {
-    image: "/images/gallery/gallery2.webp",
-    title: "Sweet Celebrations",
-    tag: "Birthday Joy",
-    desc: "That beautiful day filled with sweet treats, blowing candles, and making silent wishes for endless happiness. You deserve the world!",
+    image: "/images/gallery/gallery1.webp",
+    title: "Daddy's Little Princess",
+    tag: "Father & Daughter",
+    desc: "A bond built on protection, guidance, and unconditional love. No matter how much time passes, you'll always be the little girl who can make Dad's toughest days better with just one smile.",
     rotation: 4, left: "26%", top: "30%",
   },
   {
-    image: "/images/gallery/gallery3.webp",
-    title: "Candid Smiles",
-    tag: "Laugh Out Loud",
-    desc: "The best memories are the unplanned ones, captured with wide smiles, tears of joy, and hearts full of love. Keep laughing always!",
+    image: "/images/gallery/gallery36.webp",
+    title: "Like Mother, Like Daughter",
+    tag: "Pure Love",
+    desc: "Wrapped in a mother's warmth and endless care, this moment reflects a love that asks for nothing in return. Through every challenge and every celebration, her heart has always been your safest home.",
     rotation: -6, left: "47%", top: "8%",
   },
   {
-    image: "/images/gallery/gallery4.webp",
-    title: "Cozy Silly Chats",
-    tag: "Late Nights",
-    desc: "Comfort in the small things: sipping hot cocoa, discussing silly rumors, and sharing secrets that only siblings can ever understand.",
+    image: "/images/gallery/gallery5.webp",
+    title: "Laughter That Lasts Forever",
+    tag: "Family Moments",
+    desc: "Some memories are priceless because they capture everyone together. The laughter, the jokes, and the happiness shared in this moment remind us that family is where life's most beautiful stories begin.",
     rotation: 5, left: "66%", top: "34%",
   },
   {
-    image: "/images/gallery/gallery5.webp",
-    title: "Fairy Lights & Magic",
-    tag: "Sparkle On",
-    desc: "Under the warm golden glow of fairy lights, holding sparklers and looking ahead to a bright, sparkling future. The best is yet to come!",
+    image: "/images/gallery/gallery4.webp",
+    title: "Midnight Memories",
+    tag: "Cousin Chronicles",
+    desc: "Late-night conversations, endless laughter, and stories that somehow felt funnier after midnight. These are the moments that turn cousins into best friends and ordinary nights into unforgettable memories.",
     rotation: -4, left: "83%", top: "10%",
   },
 ];
@@ -59,7 +59,7 @@ const FloatingMemories = () => {
   }, [activeMemory]);
 
   return (
-    <section className="relative min-h-screen py-20 overflow-hidden flex flex-col items-center justify-center"
+    <section className="relative min-h-screen py-16 md:py-20 overflow-hidden flex flex-col items-center justify-center"
       style={{ background: "linear-gradient(to bottom, var(--ink), #110912)" }}>
 
       {/* Ambient */}
@@ -69,13 +69,13 @@ const FloatingMemories = () => {
         style={{ background: "rgba(147,51,234,0.04)" }} />
 
       {/* Header */}
-      <div className="text-center z-10 px-5 max-w-2xl mb-12 md:mb-40">
+      <div className="text-center z-10 px-5 max-w-2xl mb-9 md:mb-40">
         <motion.div initial={{ opacity: 0, y: 14 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }}
           className="flex items-center justify-center gap-3 mb-4">
           <div className="w-8 h-px" style={{ background: "linear-gradient(to right, transparent, var(--rose))" }} />
           <span className="font-sans font-medium uppercase text-center"
             style={{ color: "var(--blush)", opacity: 0.65, fontSize: "clamp(0.55rem, 2vw, 0.68rem)", letterSpacing: "0.4em" }}>
-            Click to reveal our secrets
+            Little frames of us
           </span>
           <div className="w-8 h-px" style={{ background: "linear-gradient(to left, transparent, var(--rose))" }} />
         </motion.div>
@@ -90,82 +90,110 @@ const FloatingMemories = () => {
         <motion.p initial={{ opacity: 0 }} whileInView={{ opacity: 0.5 }} viewport={{ once: true }} transition={{ delay: 0.2 }}
           className="font-sans font-light leading-relaxed"
           style={{ color: "#c4a0aa", fontSize: "clamp(0.8rem, 3vw, 1rem)" }}>
-          A scattered gallery of our most cherished snapshots. Tap any photo to read the story behind it.
+          A scattered gallery of our most cherished snapshots, stitched together with laughter and birthday warmth.
         </motion.p>
       </div>
 
       {/* ── MOBILE: vertical card stack ── */}
-      <div className="block md:hidden w-full relative z-10 px-4">
-        <div className="flex flex-col gap-3 max-w-sm mx-auto">
+      <div className="block md:hidden w-full relative z-10">
+        <div
+          className="flex gap-4 overflow-x-auto snap-x snap-mandatory px-5 pb-8"
+          style={{
+            scrollbarWidth: "none",
+            WebkitMaskImage: "linear-gradient(to right, transparent 0, black 20px, black calc(100% - 20px), transparent 100%)",
+            maskImage: "linear-gradient(to right, transparent 0, black 20px, black calc(100% - 20px), transparent 100%)",
+          }}
+        >
           {memoriesList.map((memory, index) => (
             <motion.div
               key={index}
-              initial={{ opacity: 0, y: 24 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: index * 0.08, duration: 0.6 }}
+              initial={{ opacity: 0, scale: 0.96 }}
+              whileInView={{ opacity: 1, scale: 1 }}
+              viewport={{ once: true, margin: "-30px" }}
+              transition={{
+                opacity: { delay: index * 0.08, duration: 0.72, ease: [0.16, 1, 0.3, 1] },
+                scale: { delay: index * 0.08, duration: 0.72, ease: [0.16, 1, 0.3, 1] },
+                y: { delay: index * 0.18, duration: 4.8, repeat: Infinity, ease: "easeInOut" },
+              }}
+              animate={{ y: [0, index % 2 === 0 ? -5 : 5, 0] }}
+              whileTap={{ scale: 0.975 }}
               onClick={() => setActiveMemory(memory)}
-              className="cursor-pointer active:scale-[0.97] transition-transform duration-200"
+              className="snap-center shrink-0 w-[82vw] max-w-[330px] cursor-pointer text-left"
             >
               {/* Improved mobile card */}
-              <div className="rounded-2xl overflow-hidden shadow-2xl relative"
+              <div className="relative overflow-hidden rounded-[26px] shadow-[0_24px_70px_rgba(0,0,0,0.46)]"
                 style={{
-                  background: "linear-gradient(135deg, rgba(20,10,22,0.95) 0%, rgba(14,8,15,0.9) 100%)",
-                  border: "1px solid rgba(244,63,94,0.15)",
-                  backdropFilter: "blur(12px)",
+                  background: "linear-gradient(145deg, rgba(24,12,26,0.92), rgba(10,5,12,0.98))",
+                  border: "1px solid rgba(253,164,175,0.14)",
+                  backdropFilter: "blur(18px)",
                 }}>
+                <div className="absolute inset-x-8 top-0 h-px" style={{ background: "linear-gradient(90deg, transparent, rgba(253,164,175,0.55), transparent)" }} />
                 {/* Top image strip */}
-                <div className="relative h-36 overflow-hidden">
+                <div className="relative aspect-[4/5] overflow-hidden">
                   <img src={memory.image} alt={memory.title}
                     className="w-full h-full object-cover"
-                    style={{ filter: "brightness(0.75) saturate(1.15)" }} />
+                    style={{ filter: "brightness(0.82) saturate(1.12)" }} />
                   {/* gradient overlay */}
                   <div className="absolute inset-0"
-                    style={{ background: "linear-gradient(to bottom, transparent 30%, rgba(14,8,15,0.95) 100%)" }} />
+                    style={{ background: "linear-gradient(to bottom, rgba(8,3,10,0.05) 0%, rgba(8,3,10,0.2) 45%, rgba(8,3,10,0.96) 100%)" }} />
                   {/* Tag badge */}
                   <div className="absolute top-3 left-3">
-                    <span className="font-sans font-bold uppercase px-2.5 py-1 rounded-full"
+                    <span className="font-sans font-bold uppercase px-3 py-1.5 rounded-full"
                       style={{
-                        background: "rgba(244,63,94,0.18)",
-                        border: "1px solid rgba(244,63,94,0.35)",
+                        background: "rgba(8,3,10,0.5)",
+                        border: "1px solid rgba(253,164,175,0.22)",
                         color: "var(--blush)",
-                        fontSize: "0.55rem",
-                        letterSpacing: "0.3em",
-                        backdropFilter: "blur(8px)",
+                        fontSize: "0.56rem",
+                        letterSpacing: "0.28em",
+                        backdropFilter: "blur(10px)",
                       }}>
                       {memory.tag}
                     </span>
                   </div>
                   {/* Number */}
                   <div className="absolute top-3 right-3 font-display"
-                    style={{ color: "rgba(244,63,94,0.35)", fontSize: "1.1rem", fontWeight: 400 }}>
+                    style={{ color: "rgba(255,241,242,0.62)", fontSize: "1.55rem", fontWeight: 400 }}>
                     0{index + 1}
                   </div>
                 </div>
 
                 {/* Bottom text area */}
-                <div className="px-4 py-3 flex items-center justify-between">
+                <div className="absolute inset-x-0 bottom-0 p-5 flex items-end justify-between gap-4">
                   <div>
-                    <p className="font-serif font-semibold leading-tight mb-0.5"
-                      style={{ color: "rgba(240,230,234,0.92)", fontSize: "1rem" }}>
+                    <p className="font-serif font-semibold leading-none mb-2"
+                      style={{ color: "rgba(255,241,242,0.95)", fontSize: "clamp(1.35rem, 7vw, 1.9rem)" }}>
                       {memory.title}
                     </p>
-                    <p className="font-sans font-light"
-                      style={{ color: "rgba(196,160,170,0.45)", fontSize: "0.72rem" }}>
-                      Tap to read the story
+                    <p className="font-sans font-light leading-relaxed"
+                      style={{
+                        color: "rgba(253,164,175,0.64)",
+                        fontSize: "0.76rem",
+                        display: "-webkit-box",
+                        WebkitLineClamp: 1,
+                        WebkitBoxOrient: "vertical",
+                        overflow: "hidden",
+                      }}>
+                      {memory.desc}
                     </p>
                   </div>
-                  <div className="flex items-center justify-center rounded-full shrink-0 ml-3"
+                  <div className="flex items-center justify-center rounded-full shrink-0"
                     style={{
-                      width: "36px", height: "36px",
+                      width: "42px", height: "42px",
                       background: "linear-gradient(135deg, var(--rose), var(--plum))",
-                      boxShadow: "0 0 14px rgba(244,63,94,0.3)",
+                      boxShadow: "0 10px 28px rgba(244,63,94,0.34)",
                     }}>
-                    <FaChevronRight size={11} color="#fff" />
+                    <FaChevronRight size={12} color="#fff" />
                   </div>
                 </div>
               </div>
             </motion.div>
+          ))}
+        </div>
+
+        <div className="flex justify-center gap-2">
+          {memoriesList.map((memory, index) => (
+            <span key={memory.title} className="h-1.5 rounded-full"
+              style={{ width: index === 0 ? "22px" : "6px", background: index === 0 ? "var(--rose)" : "rgba(253,164,175,0.22)" }} />
           ))}
         </div>
       </div>
@@ -215,12 +243,12 @@ const FloatingMemories = () => {
             onClick={() => setActiveMemory(null)}
           >
             <motion.div
-              initial={{ y: "100%", opacity: 0 }}
-              animate={{ y: 0, opacity: 1 }}
-              exit={{ y: "100%", opacity: 0 }}
-              transition={{ type: "spring", stiffness: 140, damping: 22 }}
-              className="relative w-full md:max-w-3xl rounded-t-3xl md:rounded-3xl overflow-hidden shadow-2xl md:grid md:grid-cols-2"
-              style={{ background: "#0e080f", border: "1px solid rgba(244,63,94,0.15)", maxHeight: "90vh" }}
+              initial={{ y: "100%", opacity: 0, scale: 0.98 }}
+              animate={{ y: 0, opacity: 1, scale: 1 }}
+              exit={{ y: "100%", opacity: 0, scale: 0.98 }}
+              transition={{ type: "spring", stiffness: 170, damping: 24 }}
+              className="relative w-full md:max-w-3xl rounded-t-[30px] md:rounded-3xl overflow-hidden shadow-2xl md:grid md:grid-cols-2"
+              style={{ background: "linear-gradient(145deg, #120913, #08030a)", border: "1px solid rgba(253,164,175,0.16)", maxHeight: "92vh" }}
               onClick={(e) => e.stopPropagation()}
             >
               {/* Decorative top gradient */}
@@ -233,7 +261,7 @@ const FloatingMemories = () => {
               </div>
 
               {/* Image */}
-              <div className="relative" style={{ height: "clamp(220px, 52vw, 380px)" }}>
+              <div className="relative" style={{ height: "clamp(250px, 58vw, 380px)" }}>
                 <img src={activeMemory.image} alt={activeMemory.title} className="w-full h-full object-cover" />
                 {/* Gradient overlay bottom */}
                 <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 45%, rgba(14,8,15,0.85))" }} />
@@ -248,10 +276,10 @@ const FloatingMemories = () => {
 
               {/* Text */}
               <div className="flex flex-col justify-between overflow-y-auto"
-                style={{ padding: "clamp(20px,5vw,36px)", maxHeight: "55vh" }}>
+                style={{ padding: "clamp(22px,5vw,36px)", maxHeight: "50vh" }}>
                 <div>
                   <h3 className="font-display leading-none mb-4 grad-rose"
-                    style={{ fontSize: "clamp(1.6rem, 5vw, 2.6rem)" }}>
+                    style={{ fontSize: "clamp(1.95rem, 8vw, 2.6rem)" }}>
                     {activeMemory.title}
                   </h3>
                   <div className="w-10 h-px mb-5" style={{ background: "linear-gradient(to right, var(--rose), transparent)" }} />

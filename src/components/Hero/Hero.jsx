@@ -12,7 +12,7 @@ const Hero = () => {
   const scrollToNext = () => window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
 
   return (
-    <section ref={ref} className="relative h-screen overflow-hidden flex items-end justify-center pb-16 md:pb-24">
+    <section ref={ref} className="relative h-screen overflow-hidden flex items-center md:items-end justify-center pt-16 pb-28 md:pt-0 md:pb-24">
       {/* Parallax bg image */}
       <motion.div style={{ y: imageY }}
         className="absolute inset-0 w-full h-[115%] -top-[10%]">
