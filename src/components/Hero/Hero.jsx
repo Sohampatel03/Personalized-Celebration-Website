@@ -1,114 +1,130 @@
-import { motion } from "framer-motion";
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef } from "react";
 import { FaChevronDown } from "react-icons/fa";
 
 const Hero = () => {
-  const scrollToNext = () => {
-    window.scrollTo({
-      top: window.innerHeight,
-      behavior: "smooth",
-    });
-  };
+  const ref = useRef(null);
+  const { scrollYProgress } = useScroll({ target: ref, offset: ["start start", "end start"] });
+  const imageY = useTransform(scrollYProgress, [0, 1], ["0%", "20%"]);
+  const textY  = useTransform(scrollYProgress, [0, 1], ["0%", "25%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.55], [1, 0]);
+
+  const scrollToNext = () => window.scrollTo({ top: window.innerHeight, behavior: "smooth" });
 
   return (
-    <section className="relative h-screen overflow-hidden flex items-center justify-center bg-black">
-      {/* Dynamic Background Image with subtle Ken Burns effect */}
-      <motion.div 
-        initial={{ scale: 1.15, opacity: 0 }}
-        animate={{ scale: 1.05, opacity: 0.6 }}
-        transition={{ duration: 2.5, ease: "easeOut" }}
-        className="absolute inset-0 w-full h-full"
-      >
-        <img
-          src="/images/hero/hero.webp"
-          alt="Celebrating Piya"
-          className="w-full h-full object-cover filter brightness-[0.7]"
-        />
+    <section ref={ref} className="relative h-screen overflow-hidden flex items-end justify-center pb-16 md:pb-24">
+      {/* Parallax bg image */}
+      <motion.div style={{ y: imageY }}
+        className="absolute inset-0 w-full h-[115%] -top-[10%]">
+        <img src="/images/hero/hero.webp" alt="Celebrating Piya"
+          className="w-full h-full object-cover"
+          style={{ filter: "brightness(0.42) saturate(1.2)" }} />
       </motion.div>
 
-      {/* Decorative Glow Blobs */}
-      <div className="absolute top-1/4 left-1/4 w-[300px] h-[300px] rounded-full bg-pink-500/10 blur-[120px] animate-pulse" />
-      <div className="absolute bottom-1/4 right-1/4 w-[400px] h-[400px] rounded-full bg-purple-500/10 blur-[150px] animate-pulse" style={{ animationDuration: '6s' }} />
+      {/* Vignettes */}
+      <div className="absolute inset-0" style={{
+        background: "linear-gradient(to top, var(--ink) 0%, rgba(8,3,10,0.65) 35%, rgba(8,3,10,0.15) 70%, transparent 100%)"
+      }} />
+      <div className="absolute inset-0" style={{
+        background: "linear-gradient(to right, rgba(8,3,10,0.35) 0%, transparent 25%, transparent 75%, rgba(8,3,10,0.35) 100%)"
+      }} />
 
-      {/* Aesthetic Overlay Gradients */}
-      <div className="absolute inset-0 bg-gradient-to-t from-zinc-950 via-zinc-950/40 to-transparent" />
-      <div className="absolute inset-0 bg-radial-gradient(circle at center, transparent 30%, rgba(5,5,5,0.8) 100%)" />
+      {/* Glow orbs */}
+      <div className="absolute top-1/3 left-1/3 w-60 md:w-80 h-60 md:h-80 rounded-full blur-[120px] animate-breathe pointer-events-none"
+        style={{ background: "rgba(244,63,94,0.07)" }} />
+      <div className="absolute top-1/4 right-1/4 w-48 md:w-60 h-48 md:h-60 rounded-full blur-[100px] pointer-events-none"
+        style={{ background: "rgba(147,51,234,0.06)", animation: "breathe 6s ease-in-out infinite 2s" }} />
 
-      {/* Content Container */}
-      <motion.div
-        className="relative z-10 text-center px-6 max-w-4xl"
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 1.5 }}
-      >
-        {/* Special Day Floating Tag */}
+      {/* Content */}
+      <motion.div style={{ y: textY, opacity }}
+        className="relative z-10 text-center px-5 max-w-5xl w-full flex flex-col items-center">
+
+        {/* Eyebrow */}
         <motion.div
-          initial={{ opacity: 0, y: -20 }}
+          initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.5, duration: 0.8 }}
-          className="inline-block px-4 py-1.5 rounded-full border border-pink-500/30 bg-pink-500/5 backdrop-blur-md mb-8"
+          transition={{ delay: 0.4, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+          className="mb-5 md:mb-8 flex items-center gap-3 md:gap-4"
         >
-          <span className="uppercase tracking-[6px] text-pink-400 text-xs font-semibold">
-            ✨ A Journey Through Memories ✨
+          <div className="w-8 md:w-12 h-px" style={{ background: "linear-gradient(to right, transparent, var(--rose))" }} />
+          <span className="font-sans font-medium uppercase text-center"
+            style={{ color: "var(--blush)", fontSize: "clamp(0.55rem, 2.2vw, 0.7rem)", letterSpacing: "0.4em" }}>
+            A Journey Through Memories
           </span>
+          <div className="w-8 md:w-12 h-px" style={{ background: "linear-gradient(to left, transparent, var(--rose))" }} />
         </motion.div>
 
-        {/* Happy Birthday Neon Heading */}
-        <div className="overflow-hidden mb-4">
+        {/* Main heading — fluid size for all screens */}
+        <div className="overflow-hidden mb-1">
           <motion.h1
-            initial={{ opacity: 0, y: 100 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: 0.8, type: "spring", stiffness: 50 }}
-            className="text-7xl md:text-9xl font-black tracking-tight leading-none text-transparent bg-clip-text bg-gradient-to-r from-white via-pink-100 to-pink-300 drop-shadow-[0_0_30px_rgba(236,72,153,0.3)]"
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.55, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            className="font-display grad-blush glow-rose leading-[0.86]"
+            style={{ fontSize: "clamp(4.2rem, 18vw, 13rem)", letterSpacing: "-0.02em" }}
           >
             Happy
-            <br />
+          </motion.h1>
+        </div>
+        <div className="overflow-hidden mb-4 md:mb-5">
+          <motion.h1
+            initial={{ y: "100%", opacity: 0 }}
+            animate={{ y: 0, opacity: 1 }}
+            transition={{ delay: 0.7, duration: 1.1, ease: [0.16, 1, 0.3, 1] }}
+            className="font-display grad-blush glow-rose leading-[0.86]"
+            style={{ fontSize: "clamp(4.2rem, 18vw, 13rem)", letterSpacing: "-0.02em" }}
+          >
             Birthday
           </motion.h1>
         </div>
 
-        {/* Glowing Sister's Name */}
-        <motion.h2
-          initial={{ opacity: 0, scale: 0.8 }}
+        {/* Name */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.88 }}
           animate={{ opacity: 1, scale: 1 }}
-          transition={{ delay: 1.3, type: "spring", stiffness: 60 }}
-          className="text-4xl md:text-6xl font-extrabold tracking-wide mt-2 text-transparent bg-clip-text bg-gradient-to-r from-pink-400 to-purple-400 drop-shadow-[0_0_15px_rgba(236,72,153,0.5)]"
+          transition={{ delay: 1.0, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+          className="flex items-center gap-3 md:gap-5 mb-6 md:mb-8"
         >
-          Piya ❤️
-        </motion.h2>
+          <div className="w-10 md:w-16 h-px" style={{ background: "linear-gradient(to right, transparent, var(--blush))" }} />
+          <span className="font-serif italic grad-rose"
+            style={{ fontSize: "clamp(1.6rem, 6vw, 3.5rem)", letterSpacing: "0.04em", fontWeight: 300 }}>
+            Piya ❤️
+          </span>
+          <div className="w-10 md:w-16 h-px" style={{ background: "linear-gradient(to left, transparent, var(--blush))" }} />
+        </motion.div>
 
-        {/* Emotional Subtitle */}
+        {/* Quote — smaller on mobile */}
         <motion.p
           initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{ delay: 1.7, duration: 1 }}
-          className="mt-8 max-w-xl mx-auto text-base md:text-lg text-zinc-300 font-light leading-relaxed tracking-wider drop-shadow-md"
+          animate={{ opacity: 0.5 }}
+          transition={{ delay: 1.3, duration: 1 }}
+          className="font-serif italic text-center max-w-xs md:max-w-lg leading-relaxed"
+          style={{ color: "#d4a0aa", fontWeight: 300, fontSize: "clamp(0.85rem, 3vw, 1.1rem)" }}
         >
-          "Every picture tells a story, every memory holds a feeling. Celebrating the beautiful soul that you are."
+          "Every picture tells a story, every memory holds a feeling."
         </motion.p>
       </motion.div>
 
-      {/* Downward Scroll Indicator */}
+      {/* Scroll indicator */}
       <motion.button
         onClick={scrollToNext}
-        className="absolute bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 group cursor-pointer"
-        animate={{
-          y: [0, 8, 0],
-        }}
-        transition={{
-          duration: 2,
-          repeat: Infinity,
-          ease: "easeInOut",
-        }}
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ delay: 1.8 }}
+        style={{ opacity }}
+        className="absolute bottom-6 md:bottom-10 left-1/2 -translate-x-1/2 z-20 flex flex-col items-center gap-2 cursor-pointer"
       >
-        <span className="text-zinc-500 group-hover:text-pink-400 text-xs tracking-[4px] uppercase transition-colors duration-300">
-          Scroll Down
+        <span className="font-sans font-medium uppercase" style={{ color: "rgba(253,164,175,0.45)", fontSize: "0.6rem", letterSpacing: "0.4em" }}>
+          Scroll
         </span>
-        <div className="w-8 h-8 rounded-full border border-zinc-700 flex items-center justify-center group-hover:border-pink-400/50 group-hover:bg-pink-500/5 transition-all duration-300 shadow-lg">
-          <FaChevronDown
-            size={14}
-            className="text-zinc-400 group-hover:text-pink-400 transition-colors duration-300"
-          />
-        </div>
+        <motion.div
+          animate={{ y: [0, 6, 0] }}
+          transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+          className="w-7 h-7 rounded-full flex items-center justify-center border"
+          style={{ borderColor: "rgba(244,63,94,0.3)", background: "rgba(244,63,94,0.05)" }}
+        >
+          <FaChevronDown size={10} style={{ color: "rgba(253,164,175,0.55)" }} />
+        </motion.div>
       </motion.button>
     </section>
   );
