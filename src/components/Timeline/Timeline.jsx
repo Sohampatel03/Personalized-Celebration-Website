@@ -37,7 +37,7 @@ const Timeline = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative overflow-hidden" style={{ background: "var(--ink)", padding: "clamp(80px,12vw,160px) clamp(5%,8%,8%) clamp(80px,12vw,140px)" }}>
+    <section ref={containerRef} className="relative overflow-hidden" style={{ background: "var(--ink)", padding: "clamp(80px,12vw,160px) clamp(4%,6%,8%) clamp(80px,12vw,140px)" }}>
 
       {/* Ambient blob */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[350px] rounded-full blur-[150px] pointer-events-none"
@@ -73,11 +73,11 @@ const Timeline = () => {
             style={{ background: "linear-gradient(to bottom, var(--rose), var(--plum))", boxShadow: "0 0 10px rgba(244,63,94,0.35)" }} />
         </div>
 
-        {/* Mobile: left border line */}
-        <div className="absolute left-4 top-0 bottom-0 w-px block md:hidden"
-          style={{ background: "linear-gradient(to bottom, var(--rose), var(--plum))", opacity: 0.3 }} />
+        {/* Mobile: left gradient line */}
+        <div className="absolute top-0 bottom-0 block md:hidden"
+          style={{ left: "28px", width: "2px", background: "linear-gradient(to bottom, var(--rose), var(--plum))", opacity: 0.4, borderRadius: "2px" }} />
 
-        <div className="space-y-16 md:space-y-36 relative z-10">
+        <div className="space-y-10 md:space-y-36 relative z-10">
           {timelineData.map((item, index) => {
             const isLeft = index % 2 === 0;
             return (
@@ -89,39 +89,53 @@ const Timeline = () => {
                     style={{ borderColor: "rgba(244,63,94,0.3)", background: "var(--ink)" }} />
                 </div>
 
-                {/* Mobile: left dot */}
-                <div className="absolute left-3 top-5 z-20 block md:hidden">
-                  <div className="timeline-dot w-2.5 h-2.5 rounded-full border-2"
-                    style={{ borderColor: "rgba(244,63,94,0.4)", background: "var(--ink)" }} />
-                </div>
+                {/* ── MOBILE layout — redesigned ── */}
+                <div className="block md:hidden pl-14 pr-2">
+                  {/* Left dot — aligned with the line at left:28px */}
+                  <div className="absolute top-5 z-20 block md:hidden"
+                    style={{ left: "22px" }}>
+                    <div className="timeline-dot w-3 h-3 rounded-full border-2"
+                      style={{ borderColor: "rgba(244,63,94,0.4)", background: "var(--ink)" }} />
+                  </div>
 
-                {/* Mobile layout: single column, indent from left line */}
-                <div className="block md:hidden pl-10">
-                  <div className="polaroid-wrapper mb-5">
-                    <div className="rounded-2xl overflow-hidden shadow-xl"
-                      style={{ background: "rgba(14,8,15,0.6)", border: "1px solid rgba(244,63,94,0.1)" }}>
-                      <div className="relative h-52 overflow-hidden">
+                  {/* Year badge floating above the card */}
+                  <div className="text-wrapper mb-3 flex items-baseline gap-3">
+                    <span className="font-display grad-rose leading-none select-none"
+                      style={{ fontSize: "clamp(2.8rem, 13vw, 4rem)", letterSpacing: "-0.03em",
+                        background: "linear-gradient(135deg, rgba(244,63,94,0.7) 0%, rgba(147,51,234,0.5) 100%)",
+                        WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
+                      {item.year}
+                    </span>
+                    <div className="h-px flex-1 self-center" style={{ background: "linear-gradient(to right, var(--rose), transparent)", opacity: 0.3 }} />
+                  </div>
+
+                  {/* Image card */}
+                  <div className="polaroid-wrapper mb-4">
+                    <div className="rounded-2xl overflow-hidden shadow-xl relative"
+                      style={{ background: "rgba(14,8,15,0.6)", border: "1px solid rgba(244,63,94,0.12)" }}>
+                      <div className="relative overflow-hidden" style={{ height: "clamp(160px,48vw,200px)" }}>
                         <img src={item.image} alt="" loading="lazy"
                           className="w-full h-full object-cover"
-                          style={{ filter: "brightness(0.87) saturate(1.1)" }} />
-                        {/* Year chip */}
-                        <div className="absolute top-3 left-3">
+                          style={{ filter: "brightness(0.82) saturate(1.15)" }} />
+                        {/* Gradient bottom for text readability */}
+                        <div className="absolute inset-0"
+                          style={{ background: "linear-gradient(to bottom, transparent 50%, rgba(14,8,15,0.7) 100%)" }} />
+                        {/* Year chip inside image */}
+                        <div className="absolute top-3 right-3">
                           <span className="font-sans font-semibold px-2.5 py-1 rounded-full"
-                            style={{ background: "rgba(244,63,94,0.15)", border: "1px solid rgba(244,63,94,0.3)", color: "var(--blush)", fontSize: "0.7rem", letterSpacing: "0.05em" }}>
+                            style={{ background: "rgba(244,63,94,0.18)", border: "1px solid rgba(244,63,94,0.35)", color: "var(--blush)", fontSize: "0.68rem", letterSpacing: "0.04em", backdropFilter: "blur(6px)" }}>
                             {item.year}
                           </span>
                         </div>
                       </div>
                     </div>
                   </div>
-                  <div className="text-wrapper">
-                    <div className="font-display leading-none mb-2 select-none"
-                      style={{ fontSize: "clamp(3rem, 14vw, 5rem)", letterSpacing: "-0.03em", background: "linear-gradient(135deg, rgba(244,63,94,0.14) 0%, rgba(147,51,234,0.09) 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text" }}>
-                      {item.year}
-                    </div>
-                    <div className="w-8 h-px mb-3" style={{ background: "linear-gradient(to right, var(--rose), transparent)" }} />
+
+                  {/* Caption */}
+                  <div className="text-wrapper px-1">
+                    <div className="w-7 h-px mb-3" style={{ background: "linear-gradient(to right, var(--rose), transparent)" }} />
                     <p className="font-serif font-light leading-relaxed"
-                      style={{ color: "rgba(196,160,170,0.75)", fontStyle: "italic", fontSize: "0.95rem" }}>
+                      style={{ color: "rgba(196,160,170,0.78)", fontStyle: "italic", fontSize: "clamp(0.88rem, 3.5vw, 1rem)" }}>
                       {item.caption}
                     </p>
                   </div>
