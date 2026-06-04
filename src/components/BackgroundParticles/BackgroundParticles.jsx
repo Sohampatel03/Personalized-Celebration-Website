@@ -52,7 +52,7 @@ const BackgroundParticles = () => {
       {particles.map((p) => (
         <div
           key={p.id}
-          className="absolute"
+          className="absolute will-change-transform"
           style={{
             left: p.left,
             bottom: p.bottom,

@@ -52,7 +52,7 @@ const FinalGift = () => {
 
   return (
     <section
-      className="min-h-screen py-16 md:py-24 flex flex-col items-center justify-center relative overflow-hidden px-5"
+      className="min-h-screen py-16 md:py-24 flex flex-col items-center justify-center relative overflow-hidden px-5 perform-contain"
       style={{ background: "var(--ink)" }}
     >
       {/* Glow */}
@@ -97,7 +97,7 @@ const FinalGift = () => {
                   Piya's Birthday Gift
                 </h2>
                 <p
-                  className="font-sans font-light leading-relaxed max-w-xs mx-auto"
+                  className="font-sans font-light leading-relaxed max-w-xs md:max-w-md mx-auto text-center"
                   style={{ color: "rgba(196,160,170,0.55)", fontSize: "clamp(0.8rem, 3vw, 0.9rem)" }}
                 >
                   A locked chest of magical sibling wishes. Tap the glowing gift box!

@@ -37,7 +37,7 @@ const Timeline = () => {
   }, []);
 
   return (
-    <section ref={containerRef} className="relative overflow-hidden" style={{ background: "linear-gradient(to bottom, var(--ink), #100711 45%, var(--ink))", padding: "clamp(76px,12vw,160px) clamp(4%,6%,8%) clamp(80px,12vw,140px)" }}>
+    <section ref={containerRef} className="relative overflow-hidden perform-contain" style={{ background: "linear-gradient(to bottom, var(--ink), #100711 45%, var(--ink))", padding: "clamp(76px,12vw,160px) clamp(4%,6%,8%) clamp(80px,12vw,140px)" }}>
 
       {/* Ambient blob */}
       <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[350px] rounded-full blur-[150px] pointer-events-none"
@@ -119,7 +119,7 @@ const Timeline = () => {
                     <div className="w-full max-w-[340px] rounded-[28px] overflow-hidden shadow-[0_22px_70px_rgba(0,0,0,0.45)] relative p-3"
                       style={{ background: "linear-gradient(145deg, rgba(21,10,23,0.92), rgba(8,3,10,0.98))", border: "1px solid rgba(253,164,175,0.13)", backdropFilter: "blur(18px)" }}>
                       <div className="relative overflow-hidden rounded-[22px]" style={{ aspectRatio: "3 / 4", background: "rgba(8,3,10,0.82)" }}>
-                        <img src={item.image} alt="" loading="lazy"
+                        <img src={item.image} alt="" loading="lazy" decoding="async"
                           className="w-full h-full object-contain"
                           style={{ filter: "brightness(0.82) saturate(1.15)" }} />
                         {/* Gradient bottom for text readability */}
@@ -152,7 +152,7 @@ const Timeline = () => {
                     <div className="w-full max-w-[340px] rounded-[28px] overflow-hidden shadow-2xl p-3 transition-all duration-500 hover:-translate-y-2 hover:shadow-[0_28px_80px_rgba(244,63,94,0.13)]"
                       style={{ background: "linear-gradient(145deg, rgba(24,12,26,0.78), rgba(8,3,10,0.9))", border: "1px solid rgba(253,164,175,0.14)", backdropFilter: "blur(22px)" }}>
                       <div className="relative rounded-2xl overflow-hidden" style={{ aspectRatio: "2 / 3", background: "rgba(8,3,10,0.75)" }}>
-                        <img src={item.image} alt="" loading="lazy"
+                        <img src={item.image} alt="" loading="lazy" decoding="async"
                           className="w-full h-full object-contain"
                           style={{ filter: "brightness(0.88) saturate(1.1)" }} />
                         <div className="absolute top-4 left-4">

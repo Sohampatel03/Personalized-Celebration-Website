@@ -1,4 +1,5 @@
 import { useState, useEffect } from "react";
+import { createPortal } from "react-dom";
 import { motion, AnimatePresence } from "framer-motion";
 import { FaTimes, FaHeart, FaChevronRight } from "react-icons/fa";
 
@@ -48,18 +49,21 @@ const FloatingMemories = () => {
     if (activeMemory) {
       document.body.style.overflow = "hidden";
       document.body.style.touchAction = "none";
+      window.lenis?.stop();
     } else {
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
+      window.lenis?.start();
     }
     return () => {
       document.body.style.overflow = "";
       document.body.style.touchAction = "";
+      window.lenis?.start();
     };
   }, [activeMemory]);
 
   return (
-    <section className="relative min-h-screen py-16 md:py-20 overflow-hidden flex flex-col items-center justify-center"
+    <section className="relative min-h-screen py-16 md:py-20 overflow-hidden flex flex-col items-center justify-center perform-contain"
       style={{ background: "linear-gradient(to bottom, var(--ink), #110912)" }}>
 
       {/* Ambient */}
@@ -233,87 +237,90 @@ const FloatingMemories = () => {
       </div>
 
       {/* Lightbox modal */}
-      <AnimatePresence>
-        {activeMemory && (
-          <motion.div
-            initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
-            transition={{ duration: 0.25 }}
-            className="fixed inset-0 z-[9999] flex items-end md:items-center justify-center"
-            style={{ background: "rgba(8,3,10,0.92)", backdropFilter: "blur(20px)" }}
-            onClick={() => setActiveMemory(null)}
-          >
+      {createPortal(
+        <AnimatePresence>
+          {activeMemory && (
             <motion.div
-              initial={{ y: "100%", opacity: 0, scale: 0.98 }}
-              animate={{ y: 0, opacity: 1, scale: 1 }}
-              exit={{ y: "100%", opacity: 0, scale: 0.98 }}
-              transition={{ type: "spring", stiffness: 170, damping: 24 }}
-              className="relative w-full md:max-w-3xl rounded-t-[30px] md:rounded-3xl overflow-hidden shadow-2xl md:grid md:grid-cols-2"
-              style={{ background: "linear-gradient(145deg, #120913, #08030a)", border: "1px solid rgba(253,164,175,0.16)", maxHeight: "92vh" }}
-              onClick={(e) => e.stopPropagation()}
+              initial={{ opacity: 0 }} animate={{ opacity: 1 }} exit={{ opacity: 0 }}
+              transition={{ duration: 0.25 }}
+              className="fixed inset-0 z-[9999] flex items-end md:items-center justify-center"
+              style={{ background: "rgba(8,3,10,0.92)", backdropFilter: "blur(20px)" }}
+              onClick={() => setActiveMemory(null)}
             >
-              {/* Decorative top gradient */}
-              <div className="absolute top-0 inset-x-0 h-1 pointer-events-none"
-                style={{ background: "linear-gradient(90deg, var(--rose), var(--plum))" }} />
+              <motion.div
+                initial={{ y: "100%", opacity: 0, scale: 0.98 }}
+                animate={{ y: 0, opacity: 1, scale: 1 }}
+                exit={{ y: "100%", opacity: 0, scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 170, damping: 24 }}
+                className="relative w-full md:max-w-3xl rounded-t-[30px] md:rounded-3xl overflow-y-auto md:overflow-hidden shadow-2xl md:grid md:grid-cols-2"
+                style={{ background: "linear-gradient(145deg, #120913, #08030a)", border: "1px solid rgba(253,164,175,0.16)", maxHeight: "90vh" }}
+                onClick={(e) => e.stopPropagation()}
+              >
+                {/* Decorative top gradient */}
+                <div className="absolute top-0 inset-x-0 h-1 pointer-events-none"
+                  style={{ background: "linear-gradient(90deg, var(--rose), var(--plum))" }} />
 
-              {/* Pull bar for mobile */}
-              <div className="md:hidden flex justify-center pt-4 pb-2">
-                <div className="w-10 h-1 rounded-full" style={{ background: "rgba(255,255,255,0.18)" }} />
-              </div>
-
-              {/* Image */}
-              <div className="relative" style={{ height: "clamp(250px, 58vw, 380px)" }}>
-                <img src={activeMemory.image} alt={activeMemory.title} className="w-full h-full object-cover" />
-                {/* Gradient overlay bottom */}
-                <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 45%, rgba(14,8,15,0.85))" }} />
-                {/* Tag on image */}
-                <div className="absolute bottom-4 left-4">
-                  <span className="inline-block px-3 py-1 rounded-full font-sans font-bold uppercase"
-                    style={{ color: "var(--rose)", background: "rgba(244,63,94,0.12)", border: "1px solid rgba(244,63,94,0.25)", fontSize: "0.6rem", letterSpacing: "0.35em", backdropFilter: "blur(8px)" }}>
-                    {activeMemory.tag}
-                  </span>
-                </div>
-              </div>
-
-              {/* Text */}
-              <div className="flex flex-col justify-between overflow-y-auto"
-                style={{ padding: "clamp(22px,5vw,36px)", maxHeight: "50vh" }}>
-                <div>
-                  <h3 className="font-display leading-none mb-4 grad-rose"
-                    style={{ fontSize: "clamp(1.95rem, 8vw, 2.6rem)" }}>
-                    {activeMemory.title}
-                  </h3>
-                  <div className="w-10 h-px mb-5" style={{ background: "linear-gradient(to right, var(--rose), transparent)" }} />
-                  <p className="font-serif font-light leading-[1.85] text-justify"
-                    style={{ color: "rgba(196,160,170,0.82)", fontStyle: "italic", fontSize: "clamp(0.88rem, 2.5vw, 1.02rem)" }}>
-                    {activeMemory.desc}
-                  </p>
+                {/* Pull bar for mobile */}
+                <div className="md:hidden flex justify-center pt-4 pb-2">
+                  <div className="w-10 h-1 rounded-full" style={{ background: "rgba(255,255,255,0.18)" }} />
                 </div>
 
-                {/* Footer */}
-                <div className="mt-6 pt-5 flex items-center justify-between font-sans text-xs"
-                  style={{ borderTop: "1px solid rgba(255,255,255,0.06)", color: "rgba(196,160,170,0.4)" }}>
-                  <span className="flex items-center gap-1.5">
-                    <FaHeart style={{ color: "var(--rose)" }} size={10} className="animate-pulse" />
-                    To: Piya
-                  </span>
-                  <span>From: Your Brother</span>
+                {/* Image */}
+                <div className="relative shrink-0" style={{ height: "clamp(220px, 48vw, 380px)" }}>
+                  <img src={activeMemory.image} alt={activeMemory.title} className="w-full h-full object-cover" />
+                  {/* Gradient overlay bottom */}
+                  <div className="absolute inset-0" style={{ background: "linear-gradient(to bottom, transparent 45%, rgba(14,8,15,0.85))" }} />
+                  {/* Tag on image */}
+                  <div className="absolute bottom-4 left-4">
+                    <span className="inline-block px-3 py-1 rounded-full font-sans font-bold uppercase"
+                      style={{ color: "var(--rose)", background: "rgba(244,63,94,0.12)", border: "1px solid rgba(244,63,94,0.25)", fontSize: "0.6rem", letterSpacing: "0.35em", backdropFilter: "blur(8px)" }}>
+                      {activeMemory.tag}
+                    </span>
+                  </div>
                 </div>
-              </div>
 
-              {/* Close button */}
-              <button onClick={() => setActiveMemory(null)}
-                className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-250 z-10"
-                style={{ background: "rgba(14,8,15,0.85)", border: "1px solid rgba(244,63,94,0.25)" }}
-                onTouchStart={e => e.currentTarget.style.background = "var(--rose)"}
-                onTouchEnd={e => e.currentTarget.style.background = "rgba(14,8,15,0.85)"}
-                onMouseEnter={e => e.currentTarget.style.background = "var(--rose)"}
-                onMouseLeave={e => e.currentTarget.style.background = "rgba(14,8,15,0.85)"}>
-                <FaTimes size={13} color="#fff" />
-              </button>
+                {/* Text */}
+                <div className="flex flex-col justify-between md:overflow-y-auto md:max-h-[380px]"
+                  style={{ padding: "clamp(20px,5vw,36px)" }}>
+                  <div>
+                    <h3 className="font-display leading-none mb-4 grad-rose"
+                      style={{ fontSize: "clamp(1.8rem, 8vw, 2.6rem)" }}>
+                      {activeMemory.title}
+                    </h3>
+                    <div className="w-10 h-px mb-5" style={{ background: "linear-gradient(to right, var(--rose), transparent)" }} />
+                    <p className="font-serif font-light leading-[1.85] text-justify"
+                      style={{ color: "rgba(196,160,170,0.82)", fontStyle: "italic", fontSize: "clamp(0.88rem, 2.5vw, 1.02rem)" }}>
+                      {activeMemory.desc}
+                    </p>
+                  </div>
+
+                  {/* Footer */}
+                  <div className="mt-6 pt-5 flex items-center justify-between font-sans text-xs"
+                    style={{ borderTop: "1px solid rgba(255,255,255,0.06)", color: "rgba(196,160,170,0.4)" }}>
+                    <span className="flex items-center gap-1.5">
+                      <FaHeart style={{ color: "var(--rose)" }} size={10} className="animate-pulse" />
+                      To: Piya
+                    </span>
+                    <span>From: Your Brother</span>
+                  </div>
+                </div>
+
+                {/* Close button */}
+                <button onClick={() => setActiveMemory(null)}
+                  className="absolute top-4 right-4 w-9 h-9 rounded-full flex items-center justify-center cursor-pointer transition-all duration-250 z-10"
+                  style={{ background: "rgba(14,8,15,0.85)", border: "1px solid rgba(244,63,94,0.25)" }}
+                  onTouchStart={e => e.currentTarget.style.background = "var(--rose)"}
+                  onTouchEnd={e => e.currentTarget.style.background = "rgba(14,8,15,0.85)"}
+                  onMouseEnter={e => e.currentTarget.style.background = "var(--rose)"}
+                  onMouseLeave={e => e.currentTarget.style.background = "rgba(14,8,15,0.85)"}>
+                  <FaTimes size={13} color="#fff" />
+                </button>
+              </motion.div>
             </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+          )}
+        </AnimatePresence>,
+        document.body
+      )}
     </section>
   );
 };

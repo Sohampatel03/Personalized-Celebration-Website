@@ -11,6 +11,7 @@ node_modules
 dist
 gallery
 hero
+videos
 timeline
 dist-ssr
 .env

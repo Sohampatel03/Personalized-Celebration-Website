@@ -8,6 +8,8 @@ const useLenis = () => {
       smoothWheel: true,
     });
 
+    window.lenis = lenis;
+
     const raf = (time) => {
       lenis.raf(time);
       requestAnimationFrame(raf);
@@ -17,6 +19,7 @@ const useLenis = () => {
 
     return () => {
       lenis.destroy();
+      window.lenis = null;
     };
   }, []);
 };

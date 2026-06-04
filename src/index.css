@@ -152,3 +152,13 @@ body::before {
 .animate-breathe    { animation: breathe 4s ease-in-out infinite; }
 .animate-spin-slow  { animation: spin-slow 18s linear infinite; }
 .animate-pulse-ring { animation: pulse-ring 2s ease-out infinite; }
+
+/* ─── Performance Containment & Offscreen Skipping ──────── */
+.perform-contain {
+  content-visibility: auto;
+  contain-intrinsic-size: 0 500px; /* Gives browser estimated sizing to avoid scroll jump */
+}
+
+.will-change-transform {
+  will-change: transform;
+}
