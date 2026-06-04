@@ -9,10 +9,6 @@ lerna-debug.log*
 
 node_modules
 dist
-gallery
-hero
-videos
-timeline
 dist-ssr
 .env
 *.local

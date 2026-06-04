@@ -55,7 +55,7 @@ const Timeline = () => {
         </div>
         <h2 className="font-display grad-blush glow-rose leading-none mb-5"
           style={{ fontSize: "clamp(2.4rem, 9vw, 6rem)", letterSpacing: "-0.02em" }}>
-          Our Growing Years
+          Your Growing Years
         </h2>
         <p className="font-sans font-light leading-relaxed max-w-xl mx-auto"
           style={{ color: "rgba(196,160,170,0.55)", fontSize: "clamp(0.8rem, 3vw, 1rem)" }}>

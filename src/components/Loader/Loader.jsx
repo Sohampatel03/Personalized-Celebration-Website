@@ -1,8 +1,10 @@
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 
+const TOTAL = 3;
+
 const Loader = ({ onFinish }) => {
-  const [count, setCount] = useState(3);
+  const [count, setCount] = useState(TOTAL);
   const [showWelcome, setShowWelcome] = useState(false);
   const [curtainOpen, setCurtainOpen] = useState(false);
 
@@ -18,7 +20,9 @@ const Loader = ({ onFinish }) => {
   }, [count, onFinish]);
 
   const circumference = 2 * Math.PI * 52;
-  const progress = ((3 - count) / 3) * circumference;
+  // elapsed ticks: when count=3 → 0 elapsed, count=2 → 1, count=1 → 2, count=0 → 3
+  const elapsed = TOTAL - count;
+  const progress = (elapsed / TOTAL) * circumference;
 
   return (
     <motion.div
@@ -36,17 +40,16 @@ const Loader = ({ onFinish }) => {
         `
       }} />
 
-      {/* Rotating rings — decorative only, behind content */}
+      {/* Decorative rotating rings */}
       <div className="absolute w-[500px] h-[500px] rounded-full pointer-events-none"
         style={{ border: "1px solid rgba(244,63,94,0.06)", animation: "spin-slow 40s linear infinite" }} />
       <div className="absolute w-[340px] h-[340px] rounded-full pointer-events-none"
         style={{ border: "1px solid rgba(147,51,234,0.06)", animation: "spin-slow 26s linear infinite reverse" }} />
 
-      {/* ── MAIN CONTENT — always on top of curtains ── */}
+      {/* Main content */}
       <div className="relative z-30 flex flex-col items-center px-6">
         <AnimatePresence mode="wait">
           {!showWelcome ? (
-
             /* ── PHASE 1: COUNTDOWN ── */
             <motion.div
               key="countdown"
@@ -56,7 +59,6 @@ const Loader = ({ onFinish }) => {
               transition={{ duration: 0.45, ease: [0.16, 1, 0.3, 1] }}
               className="flex flex-col items-center gap-8 md:gap-10"
             >
-              {/* Eyebrow label */}
               <motion.p
                 initial={{ opacity: 0, y: -12 }}
                 animate={{ opacity: 0.55, y: 0 }}
@@ -71,7 +73,7 @@ const Loader = ({ onFinish }) => {
               <div className="relative flex items-center justify-center"
                 style={{ width: "clamp(140px, 38vw, 176px)", height: "clamp(140px, 38vw, 176px)" }}>
 
-                {/* Outer pulse ring */}
+                {/* Pulse ring */}
                 <motion.div
                   animate={{ scale: [1, 1.35], opacity: [0.45, 0] }}
                   transition={{ duration: 1.8, repeat: Infinity, ease: "easeOut" }}
@@ -79,38 +81,40 @@ const Loader = ({ onFinish }) => {
                   style={{ border: "1px solid rgba(244,63,94,0.4)" }}
                 />
 
-                {/* SVG arc */}
+                {/* SVG progress arc */}
                 <svg
                   className="absolute inset-0 -rotate-90"
                   style={{ width: "100%", height: "100%" }}
                   viewBox="0 0 120 120"
                 >
-                  {/* Track */}
-                  <circle cx="60" cy="60" r="52" fill="none"
-                    stroke="rgba(255,255,255,0.05)" strokeWidth="1.5" />
-                  {/* Glow blur copy */}
-                  <motion.circle cx="60" cy="60" r="52" fill="none"
-                    stroke="rgba(244,63,94,0.2)" strokeWidth="8"
-                    strokeLinecap="round"
-                    strokeDasharray={circumference}
-                    animate={{ strokeDashoffset: circumference - progress }}
-                    transition={{ duration: 0.85, ease: "linear" }}
-                    style={{ filter: "blur(5px)" }}
-                  />
-                  {/* Crisp arc */}
-                  <motion.circle cx="60" cy="60" r="52" fill="none"
-                    stroke="url(#rg)" strokeWidth="2.5"
-                    strokeLinecap="round"
-                    strokeDasharray={circumference}
-                    animate={{ strokeDashoffset: circumference - progress }}
-                    transition={{ duration: 0.85, ease: "linear" }}
-                  />
                   <defs>
                     <linearGradient id="rg" x1="0%" y1="0%" x2="100%" y2="0%">
                       <stop offset="0%" stopColor="#f43f5e" />
                       <stop offset="100%" stopColor="#c026d3" />
                     </linearGradient>
                   </defs>
+
+                  {/* Track */}
+                  <circle cx="60" cy="60" r="52" fill="none"
+                    stroke="rgba(255,255,255,0.05)" strokeWidth="1.5" />
+
+                  {/* Glow copy */}
+                  <circle cx="60" cy="60" r="52" fill="none"
+                    stroke="rgba(244,63,94,0.2)" strokeWidth="8"
+                    strokeLinecap="round"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={circumference - progress}
+                    style={{ filter: "blur(5px)", transition: "stroke-dashoffset 0.85s linear" }}
+                  />
+
+                  {/* Crisp arc */}
+                  <circle cx="60" cy="60" r="52" fill="none"
+                    stroke="url(#rg)" strokeWidth="2.5"
+                    strokeLinecap="round"
+                    strokeDasharray={circumference}
+                    strokeDashoffset={circumference - progress}
+                    style={{ transition: "stroke-dashoffset 0.85s linear" }}
+                  />
                 </svg>
 
                 {/* Countdown digit */}
@@ -143,7 +147,6 @@ const Loader = ({ onFinish }) => {
             </motion.div>
 
           ) : (
-
             /* ── PHASE 2: WELCOME ── */
             <motion.div
               key="welcome"
@@ -158,7 +161,6 @@ const Loader = ({ onFinish }) => {
                 className="w-20 h-px"
                 style={{ background: "linear-gradient(90deg, transparent, var(--rose), transparent)" }}
               />
-
               <motion.p
                 initial={{ opacity: 0, y: 8 }} animate={{ opacity: 0.55, y: 0 }}
                 transition={{ delay: 0.12 }}
@@ -167,16 +169,14 @@ const Loader = ({ onFinish }) => {
               >
                 A special message for Piya
               </motion.p>
-
               <motion.h1
                 initial={{ opacity: 0, y: 22 }} animate={{ opacity: 1, y: 0 }}
                 transition={{ delay: 0.22, duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
                 className="font-display grad-blush glow-rose leading-none"
                 style={{ fontSize: "clamp(2.8rem, 10vw, 6.5rem)", letterSpacing: "-0.01em" }}
               >
-                Happy Birthday
+                Happy Birthday Piyu
               </motion.h1>
-
               <motion.p
                 initial={{ opacity: 0 }} animate={{ opacity: 0.45 }}
                 transition={{ delay: 0.45 }}
@@ -185,7 +185,6 @@ const Loader = ({ onFinish }) => {
               >
                 Let the memories unfold…
               </motion.p>
-
               <motion.div
                 initial={{ scaleX: 0 }} animate={{ scaleX: 1 }}
                 transition={{ delay: 0.55, duration: 0.8 }}
@@ -197,8 +196,7 @@ const Loader = ({ onFinish }) => {
         </AnimatePresence>
       </div>
 
-      {/* ── CURTAIN PANELS — z-20 (below content at z-30) ── */}
-      {/* Only slide OUT when curtainOpen=true; they start hidden (translateX -100%/100%) */}
+      {/* Curtain panels */}
       <motion.div
         initial={{ x: "-100%" }}
         animate={{ x: curtainOpen ? "-100%" : "0%" }}
