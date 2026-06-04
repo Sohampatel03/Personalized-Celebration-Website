@@ -43,11 +43,11 @@ function App() {
 
       <SectionDivider />
 
-      <FloatingMemories />
-
       <VideoSection />
 
       <SectionDivider />
+
+      <FloatingMemories />
 
       <SectionDivider />
 
