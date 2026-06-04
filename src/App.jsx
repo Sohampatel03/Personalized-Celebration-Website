@@ -45,6 +45,10 @@ function App() {
 
       <FloatingMemories />
 
+      <VideoSection />
+
+      <SectionDivider />
+
       <SectionDivider />
 
       <Timeline />
@@ -52,10 +56,6 @@ function App() {
       <SectionDivider />
 
       <Gallery />
-
-      <SectionDivider />
-
-      <VideoSection />
 
       <SectionDivider />
 
